@@ -38,7 +38,7 @@ def ensure_repo(git_out: GitOutput) -> Path:
         readme = repo / "README.md"
         if not readme.exists():
             readme.write_text(
-                "# merox backups\n\nManaged by [merox](https://github.com/paleophyte/merox).\n",
+                "# merox backups\n\nManaged by [merox](https://github.com/borealis-ops/merox).\n",
                 encoding="utf-8",
             )
             _run(repo, "add", "README.md")

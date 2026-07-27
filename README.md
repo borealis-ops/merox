@@ -11,7 +11,7 @@ Meraki configs live in the cloud API, not `show running-config`. merox polls the
 ## Install
 
 ```bash
-pip install git+https://github.com/paleophyte/merox.git
+pip install git+https://github.com/borealis-ops/merox.git
 ```
 
 Or from a checkout:
@@ -112,9 +112,7 @@ Use `-c /path/to/config.yml` to point at a non-default config. `-v` enables debu
 ## Brand
 
 merox is part of the **Borealis** network-ops toolkit.  
-Built by [paleophyte](https://github.com/paleophyte) — repo: [paleophyte/merox](https://github.com/paleophyte/merox).
-
-Transfer to a Borealis GitHub org later is fine; this personal-repo launch keeps the first release moving.
+Maintained by [borealis-ops](https://github.com/borealis-ops).
 
 ## License
 
