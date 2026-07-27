@@ -1,0 +1,11 @@
+# merox config for Docker Compose
+# Copy to docker/config/config.yml and set MERAKI_DASHBOARD_API_KEY in the environment.
+
+interval: 3600
+organizations: []
+network_tags: []
+output:
+  git:
+    repo: /data/configs
+    user: merox
+    email: merox@localhost

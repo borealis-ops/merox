@@ -1,0 +1,12 @@
+services:
+  merox:
+    build: .
+    environment:
+      MERAKI_DASHBOARD_API_KEY: ${MERAKI_DASHBOARD_API_KEY}
+    volumes:
+      - ./docker/config:/config
+      - merox-data:/data
+    restart: unless-stopped
+
+volumes:
+  merox-data:
