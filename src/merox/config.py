@@ -11,6 +11,7 @@ import yaml
 
 
 DEFAULT_INTERVAL = 3600
+DEFAULT_FULL_SYNC_EVERY_HOURS = 168
 
 
 @dataclass
@@ -26,6 +27,8 @@ class MeroxConfig:
     api_key: str | None = None
     organizations: list[str] = field(default_factory=list)
     network_tags: list[str] = field(default_factory=list)
+    incremental: bool = True
+    full_sync_every_hours: int = DEFAULT_FULL_SYNC_EVERY_HOURS
     output: GitOutput = field(default_factory=lambda: GitOutput(repo=Path("./configs")))
     path: Path | None = None
 
@@ -55,6 +58,8 @@ def example_config(repo: Path | None = None) -> dict[str, Any]:
         "api_key": None,
         "organizations": [],
         "network_tags": [],
+        "incremental": True,
+        "full_sync_every_hours": DEFAULT_FULL_SYNC_EVERY_HOURS,
         "output": {
             "git": {
                 "repo": str(repo or (Path.home() / "merox-configs")),
@@ -79,6 +84,10 @@ def load_config(path: Path | None = None) -> MeroxConfig:
         api_key=(raw.get("api_key") or None),
         organizations=[str(x) for x in (raw.get("organizations") or [])],
         network_tags=[str(x) for x in (raw.get("network_tags") or [])],
+        incremental=bool(raw["incremental"]) if "incremental" in raw else True,
+        full_sync_every_hours=int(
+            raw.get("full_sync_every_hours") or DEFAULT_FULL_SYNC_EVERY_HOURS
+        ),
         output=GitOutput(
             repo=repo,
             user=str(git_raw.get("user") or "merox"),

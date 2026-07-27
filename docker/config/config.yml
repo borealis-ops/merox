@@ -4,6 +4,8 @@
 interval: 3600
 organizations: []
 network_tags: []
+incremental: true
+full_sync_every_hours: 168
 output:
   git:
     repo: /data/configs

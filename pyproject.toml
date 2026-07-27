@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "merox"
-version = "0.1.0"
+version = "0.2.0"
 description = "Oxidized-like Meraki Dashboard configuration backup to Git"
 readme = "README.md"
 license = { text = "MIT" }

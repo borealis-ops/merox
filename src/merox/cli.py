@@ -51,11 +51,14 @@ def cmd_run(args: argparse.Namespace) -> int:
     cfg = load_config(config_path)
     tree = working_tree_root(cfg.output)
     log = logging.getLogger("merox")
-    log.info("Writing backup into %s", tree)
-    stats = backup_once(cfg, tree)
+    force_full = bool(getattr(args, "full", False))
+    mode = "full" if force_full or not cfg.incremental else "incremental"
+    log.info("Writing backup into %s (%s)", tree, mode)
+    stats = backup_once(cfg, tree, force_full=force_full)
     message = (
         f"merox: {stats['organizations']} orgs, "
-        f"{stats['networks']} networks, {stats['devices']} devices"
+        f"{stats['networks']} networks, {stats['devices']} devices "
+        f"(full={stats['full']} incr={stats['incremental']} skip={stats['skipped']})"
     )
     committed = commit_if_changed(cfg.output, message)
     if committed:
@@ -63,11 +66,14 @@ def cmd_run(args: argparse.Namespace) -> int:
     else:
         log.info("No configuration changes detected")
     log.info(
-        "Wrote %s files (%s orgs / %s networks / %s devices)",
+        "Wrote %s files (%s orgs / %s networks / %s devices; full=%s incr=%s skip=%s)",
         stats["files"],
         stats["organizations"],
         stats["networks"],
         stats["devices"],
+        stats["full"],
+        stats["incremental"],
+        stats["skipped"],
     )
     return 0
 
@@ -114,6 +120,11 @@ def build_parser() -> argparse.ArgumentParser:
     init_p.set_defaults(func=cmd_init)
 
     run_p = sub.add_parser("run", parents=[shared], help="Run one backup cycle")
+    run_p.add_argument(
+        "--full",
+        action="store_true",
+        help="Force a full org/network/device pull (ignore changelog)",
+    )
     run_p.set_defaults(func=cmd_run)
 
     daemon_p = sub.add_parser(
